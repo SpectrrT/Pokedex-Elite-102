@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
-export const useJson = () => {
+export const useJson = (url) => {
     const [response, setResponse] = useState({})
-    const [url, setUrl] = useState()
 
     const fetcher = (url) =>
         fetch(url)
             .then((res) => res.json())
             .catch()
-    const { data } = useSWR(url, fetcher)
+    const { data, error } = useSWR(url, fetcher)
 
     useEffect(() => {
         setResponse(data)
@@ -17,6 +16,6 @@ export const useJson = () => {
 
     return {
         response,
-        setUrl,
+        error,
     }
 }

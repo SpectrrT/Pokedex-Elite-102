@@ -1,25 +1,39 @@
 import './App.css';
-import { useEffect } from 'react';
 import { useJson } from './hooks';
+import React, {useState} from "react"
 
-const Data = () => {
-  const BASE_URL = 'https://pokeapi.co/api/v2/pokemon/pikachu';
-  const { response, setUrl } = useJson();
-
-  useEffect(() => {
-      setUrl(BASE_URL)
-  }, [setUrl])
-
+const Data = ({ pokemonChar }) => {
+  const BASE_URL = `https://pokeapi.co/api/v2/pokemon/${pokemonChar}`;
+  const { response, error } = useJson(BASE_URL);
+  console.warn(error)
   return (<>
-    {JSON.stringify(response)}
+    {pokemonChar && JSON.stringify(response)}
   </>)
 }
 
 const App = () => {
+  const [userInput, setUserInput] = useState("")
+  const [submitValue, setSubmitValue] = useState("")
+  const handleChange = (event) => {
+    setUserInput(event.target.value)
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+   // alert(`The Pokemon you entered was: ${userInput}`)
+    setSubmitValue(userInput)
+  }
+  
   return (
     <div className="App">
-      <p>Hello world</p>
-      {/* <Data /> */}
+      <p>Pokedex</p>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Pokemon Name:
+          <input type="text" name="name" onChange={handleChange} value={userInput}/>
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+      <Data pokemonChar={submitValue}/>
     </div>
   );
 }
