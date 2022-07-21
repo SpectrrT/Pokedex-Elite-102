@@ -1,7 +1,6 @@
 import './App.css';
 import { useJson } from './hooks';
 import React, {useState} from "react"
-import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Button,
   Form,
