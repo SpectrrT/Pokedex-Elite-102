@@ -3,11 +3,13 @@ import { useState, type FormEvent } from 'react'
 interface SearchBarProps {
   /** The query currently shown, so the box follows navigation (evolution clicks, Back/Forward). */
   currentQuery: string
+  /** How many Pokémon the Random button can land on. */
+  pokemonCount: number
   onSearch: (query: string) => void
   onRandom: () => void
 }
 
-export function SearchBar({ currentQuery, onSearch, onRandom }: SearchBarProps) {
+export function SearchBar({ currentQuery, pokemonCount, onSearch, onRandom }: SearchBarProps) {
   const [value, setValue] = useState(currentQuery)
   const [syncedQuery, setSyncedQuery] = useState(currentQuery)
 
@@ -49,6 +51,7 @@ export function SearchBar({ currentQuery, onSearch, onRandom }: SearchBarProps) 
           <button
             type="button"
             className="btn btn-outline-secondary btn-lg flex-fill text-nowrap"
+            title={`Show one of ${pokemonCount.toLocaleString('en-US')} Pokémon at random`}
             onClick={onRandom}
           >
             Random

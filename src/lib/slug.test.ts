@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import { toSlug } from './slug'
 
@@ -6,6 +7,7 @@ describe('toSlug', () => {
     ['Pikachu', 'pikachu'],
     ['  pikachu  ', 'pikachu'],
     ['Mr. Mime', 'mr-mime'],
+    ['Mr.Mime', 'mr-mime'],
     ['Mime Jr.', 'mime-jr'],
     ["Farfetch'd", 'farfetchd'],
     ['Farfetch’d', 'farfetchd'],

@@ -14,31 +14,28 @@ const ALERT_CLASS: Record<Exclude<StatusKind, 'loading'>, string> = {
   error: 'alert-danger',
 }
 
-/** Loading, empty and error states, announced to assistive technology via live regions. */
+/**
+ * Loading, empty and error states. Only errors are live regions (`role="alert"`); routine
+ * progress is announced through the persistent status region in PokemonDetails, so the visible
+ * messages here stay plain markup and do not double up announcements.
+ */
 export function StatusMessage({ kind, title, children }: StatusMessageProps) {
   if (kind === 'loading') {
     return (
-      <output className="d-flex align-items-center gap-2 text-body-secondary">
+      <div className="d-flex align-items-center gap-2 text-body-secondary">
         <span className="spinner-border spinner-border-sm" aria-hidden="true" />
         <span>{children}</span>
-      </output>
+      </div>
     )
   }
 
-  const className = `alert ${ALERT_CLASS[kind]} mb-0`
-  const body = (
-    <>
+  return (
+    <div
+      className={`alert ${ALERT_CLASS[kind]} mb-0`}
+      role={kind === 'error' ? 'alert' : undefined}
+    >
       {title && <h2 className="alert-heading h5">{title}</h2>}
       <p className="mb-0">{children}</p>
-    </>
-  )
-
-  // <output> carries an implicit "status" role; errors must interrupt, so they stay role="alert".
-  return kind === 'error' ? (
-    <div className={className} role="alert">
-      {body}
     </div>
-  ) : (
-    <output className={`${className} d-block`}>{body}</output>
   )
 }

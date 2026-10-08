@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import typeElectric from '../test/fixtures/type-electric.json'
 import typeFire from '../test/fixtures/type-fire.json'

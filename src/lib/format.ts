@@ -1,4 +1,5 @@
-import type { PokemonSpecies } from '../types/pokeapi'
+import type { Pokemon, PokemonSpecies } from '../types/pokeapi'
+import { idFromUrl } from './api'
 
 /** Species whose display names contain punctuation or symbols that a slug cannot carry. */
 const SPECIAL_NAMES: Record<string, string> = {
@@ -57,6 +58,11 @@ export function formatPokemonName(pokemonName: string, speciesName: string = pok
 }
 
 export const formatDexNumber = (id: number): string => `#${String(id).padStart(4, '0')}`
+
+/** Alternate forms carry internal ids (10001+); the National Dex number is the species id. */
+export function nationalDexNumber(pokemon: Pokemon): number {
+  return idFromUrl(pokemon.species.url) ?? pokemon.id
+}
 
 export const formatHeight = (decimetres: number): string => `${(decimetres / 10).toFixed(1)} m`
 

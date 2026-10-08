@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { installFetchMock, requestUrl } from '../test/mockApi'
 import {
@@ -35,6 +36,13 @@ describe('PokéAPI requests', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals()
+  })
+
+  it('refuses to request anything outside PokéAPI', async () => {
+    await expect(fetchJson('https://example.com/api/v2/pokemon/pikachu')).rejects.toThrow(
+      /non-PokéAPI/,
+    )
+    expect(fetchMock).not.toHaveBeenCalled()
   })
 
   it('throws an ApiError carrying the status for non-2xx responses', async () => {

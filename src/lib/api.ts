@@ -34,6 +34,10 @@ const isHttpNotFound = (error: unknown): boolean =>
   error instanceof ApiError && error.status === 404
 
 export async function fetchJson<T>(url: string): Promise<T> {
+  // Resource URLs come from API responses; never follow one that points anywhere else.
+  if (!url.startsWith(`${API_BASE}/`)) {
+    throw new Error(`Refusing to request a non-PokéAPI URL: ${url}`)
+  }
   const response = await fetch(url)
   if (!response.ok) throw new ApiError(response.status, url)
   return (await response.json()) as T

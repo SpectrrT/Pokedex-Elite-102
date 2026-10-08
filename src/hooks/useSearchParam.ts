@@ -27,14 +27,16 @@ export function useSearchParam(
   const setValue = useCallback(
     (next: string | null, { replace = false }: SetSearchParamOptions = {}) => {
       const params = new URLSearchParams(window.location.search)
-      if (next) params.set(name, next)
+      const nextValue = next ?? ''
+      // Compare decoded values, not serialised URLs: "?pokemon=mr%20mime" and "?pokemon=mr+mime"
+      // are the same entry and must not stack up in history.
+      if (nextValue === (params.get(name) ?? '')) return
+
+      if (nextValue) params.set(name, nextValue)
       else params.delete(name)
 
       const query = params.toString()
       const url = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`
-      const current = `${window.location.pathname}${window.location.search}${window.location.hash}`
-      if (url === current) return
-
       if (replace) window.history.replaceState(null, '', url)
       else window.history.pushState(null, '', url)
       // pushState/replaceState do not fire popstate, so notify subscribers ourselves.

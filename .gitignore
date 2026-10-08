@@ -32,5 +32,6 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-# Claude desktop app launch config
+# Claude Code local files
 .claude/launch.json
+.claude/settings.local.json

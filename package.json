@@ -5,7 +5,7 @@
   "description": "A Pokédex built on PokéAPI: search any Pokémon, discover a random one, and explore its evolution line.",
   "type": "module",
   "engines": {
-    "node": ">=22.13.0"
+    "node": "^22.13.0 || ^24.0.0 || >=26.0.0"
   },
   "scripts": {
     "dev": "vite",

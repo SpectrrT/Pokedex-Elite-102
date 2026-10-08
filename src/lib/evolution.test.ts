@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import chain10 from '../test/fixtures/evolution-chain-10.json'
 import chain202 from '../test/fixtures/evolution-chain-202.json'
@@ -41,6 +42,8 @@ describe('describeEvolution with real chains', () => {
     const pikachu = stage(pichu, 'pikachu')
     const raichu = stage(pikachu, 'raichu')
     expect(describeEvolution(pikachu.evolution_details)).toBe('Level up with high friendship')
+    // PokéAPI lists the Thunder Stone once per game era; the description collapses duplicates.
+    expect(raichu.evolution_details).toHaveLength(2)
     expect(describeEvolution(raichu.evolution_details)).toBe('Use Thunder Stone')
   })
 
@@ -57,11 +60,10 @@ describe('describeEvolution with real chains', () => {
     )
   })
 
-  it('joins distinct methods with "or" and drops duplicates', () => {
+  it('joins distinct methods with "or"', () => {
     const leafeon = describeEvolution(stage(eevee, 'leafeon').evolution_details)
     expect(leafeon).toContain('Use Leaf Stone')
-    expect(leafeon.split(' or ').length).toBeGreaterThan(1)
-    expect(new Set(leafeon.split(' or ')).size).toBe(leafeon.split(' or ').length)
+    expect(leafeon).toMatch(/^Level up at .+ or /)
   })
 })
 

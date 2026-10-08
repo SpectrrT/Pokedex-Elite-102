@@ -11,8 +11,9 @@ export function toSlug(input: string): string {
     .replace(/♀/g, '-f')
     .replace(/♂/g, '-m')
     // Punctuation that PokéAPI simply omits: "farfetch'd" → "farfetchd", "#25" → "25".
-    .replace(/['’.#]/g, '')
-    // Everything else that is not a letter or digit becomes a single hyphen.
+    .replace(/['’#]/g, '')
+    // Everything else that is not a letter or digit becomes a single hyphen, so both "Mr. Mime"
+    // and "Mr.Mime" become "mr-mime" and "Mime Jr." becomes "mime-jr".
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
 

@@ -3,6 +3,8 @@ import { defineConfig } from 'vitest/config'
 
 // https://vite.dev/config/ and https://vitest.dev/config/
 export default defineConfig({
+  // Relative asset URLs, so the build works from a sub-path such as a GitHub Pages project site.
+  base: './',
   plugins: [react()],
   test: {
     environment: 'jsdom',

@@ -91,7 +91,7 @@ export interface PokemonSpecies {
   capture_rate: number
   genera: Genus[]
   flavor_text_entries: FlavorText[]
-  evolution_chain: { url: string }
+  evolution_chain: { url: string } | null
   evolves_from_species: NamedApiResource | null
   varieties: PokemonSpeciesVariety[]
   color: NamedApiResource

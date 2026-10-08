@@ -39,7 +39,7 @@ on a current toolchain, with the features the project set out to deliver actuall
 
 ## Getting started
 
-Requires Node.js 22.13 or newer (the repo's `.nvmrc` selects Node 24).
+Requires Node.js 22.13+ or 24+ (the repo's `.nvmrc` selects Node 24).
 
 ```bash
 npm install

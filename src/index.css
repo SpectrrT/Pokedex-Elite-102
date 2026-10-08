@@ -74,8 +74,9 @@
 /* ---------- Type badges ---------- */
 
 .type-badge {
-  --type-color: #777;
+  --type-color: #6f6f6f;
   --type-fg: #fff;
+  --type-chip: rgb(0 0 0 / 0.18);
 
   display: inline-flex;
   align-items: center;
@@ -93,14 +94,31 @@
 .type-badge__detail {
   padding: 0 0.45rem;
   border-radius: 999px;
-  background: rgb(0 0 0 / 0.18);
+  background: var(--type-chip);
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
 }
 
+/* Light type colours take dark text, and a light chip, so every badge clears WCAG AA (4.5:1). */
+.type-normal,
+.type-fire,
+.type-water,
+.type-electric,
+.type-grass,
+.type-ice,
+.type-ground,
+.type-flying,
+.type-psychic,
+.type-bug,
+.type-rock,
+.type-steel,
+.type-fairy {
+  --type-fg: #1a1a1a;
+  --type-chip: rgb(255 255 255 / 0.35);
+}
+
 .type-normal {
   --type-color: #a8a77a;
-  --type-fg: #1a1a1a;
 }
 .type-fire {
   --type-color: #ee8130;
@@ -110,15 +128,12 @@
 }
 .type-electric {
   --type-color: #f7d02c;
-  --type-fg: #1a1a1a;
 }
 .type-grass {
   --type-color: #7ac74c;
-  --type-fg: #1a1a1a;
 }
 .type-ice {
   --type-color: #96d9d6;
-  --type-fg: #1a1a1a;
 }
 .type-fighting {
   --type-color: #c22e28;
@@ -128,22 +143,18 @@
 }
 .type-ground {
   --type-color: #e2bf65;
-  --type-fg: #1a1a1a;
 }
 .type-flying {
   --type-color: #a98ff3;
-  --type-fg: #1a1a1a;
 }
 .type-psychic {
   --type-color: #f95587;
 }
 .type-bug {
   --type-color: #a6b91a;
-  --type-fg: #1a1a1a;
 }
 .type-rock {
   --type-color: #b6a136;
-  --type-fg: #1a1a1a;
 }
 .type-ghost {
   --type-color: #735797;
@@ -156,11 +167,9 @@
 }
 .type-steel {
   --type-color: #b7b7ce;
-  --type-fg: #1a1a1a;
 }
 .type-fairy {
   --type-color: #d685ad;
-  --type-fg: #1a1a1a;
 }
 
 .matchup-title {
@@ -264,8 +273,9 @@
   transform: translateY(-2px);
 }
 
+/* Bootstrap's focus ring is 25% alpha, far below the 3:1 WCAG asks of a focus indicator. */
 .evolution-stage:focus-visible {
-  outline: 3px solid var(--bs-focus-ring-color);
+  outline: 3px solid var(--bs-body-color);
   outline-offset: 2px;
 }
 
@@ -277,6 +287,26 @@
 .evolution-stage--current {
   border-color: var(--pokedex-red);
   background: var(--bs-danger-bg-subtle);
+}
+
+/* ---------- Dark-mode contrast ---------- */
+
+/* Pokédex red reads poorly on dark surfaces; Bootstrap's emphasis tint keeps the same hue. */
+[data-bs-theme='dark'] .evolution-stage:hover,
+[data-bs-theme='dark'] .evolution-stage:focus-visible,
+[data-bs-theme='dark'] .evolution-stage--current {
+  border-color: var(--bs-danger-text-emphasis);
+}
+
+/* Bootstrap 5.3 does not recolour outline buttons for dark mode, where they fall below 4.5:1. */
+[data-bs-theme='dark'] .btn-outline-danger {
+  --bs-btn-color: var(--bs-danger-text-emphasis);
+  --bs-btn-border-color: var(--bs-danger-text-emphasis);
+}
+
+[data-bs-theme='dark'] .btn-outline-secondary {
+  --bs-btn-color: #adb5bd;
+  --bs-btn-border-color: #adb5bd;
 }
 
 .evolution-stage img {

@@ -6,6 +6,7 @@ import {
   formatPokemonName,
   formatWeight,
   humanize,
+  nationalDexNumber,
 } from '../lib/format'
 import type { Pokemon, PokemonSpecies } from '../types/pokeapi'
 import { EvolutionChain } from './EvolutionChain'
@@ -18,10 +19,12 @@ interface PokemonCardProps {
   pokemon: Pokemon
   /** Species data loads separately; the card renders what it can until it arrives. */
   species: PokemonSpecies | undefined
+  /** Set when the species request failed, so the sections that need it can say so. */
+  speciesError: Error | undefined
   onSelectSpecies: (speciesName: string) => void
 }
 
-export function PokemonCard({ pokemon, species, onSelectSpecies }: PokemonCardProps) {
+export function PokemonCard({ pokemon, species, speciesError, onSelectSpecies }: PokemonCardProps) {
   const displayName = formatPokemonName(pokemon.name, pokemon.species.name)
   const artwork =
     pokemon.sprites.other?.['official-artwork']?.front_default ?? pokemon.sprites.front_default
@@ -35,6 +38,7 @@ export function PokemonCard({ pokemon, species, onSelectSpecies }: PokemonCardPr
           <div className="col-12 col-md-5 text-center">
             {artwork ? (
               <img
+                key={pokemon.id}
                 className="pokemon-artwork"
                 src={artwork}
                 alt={`Official artwork of ${displayName}`}
@@ -47,7 +51,7 @@ export function PokemonCard({ pokemon, species, onSelectSpecies }: PokemonCardPr
           </div>
 
           <div className="col-12 col-md-7">
-            <p className="dex-number mb-1">{formatDexNumber(pokemon.id)}</p>
+            <p className="dex-number mb-1">{formatDexNumber(nationalDexNumber(pokemon))}</p>
             <h2 id="pokemon-name" className="display-6 fw-bold mb-1">
               {displayName}
             </h2>
@@ -110,13 +114,19 @@ export function PokemonCard({ pokemon, species, onSelectSpecies }: PokemonCardPr
           <h3 id="evolution-heading" className="h5 mb-3">
             Evolution line
           </h3>
-          {species ? (
+          {species && (
             <EvolutionChain
               species={species}
               currentSpeciesName={pokemon.species.name}
               onSelect={onSelectSpecies}
             />
-          ) : (
+          )}
+          {!species && speciesError && (
+            <StatusMessage kind="error">
+              Couldn't load this Pokémon's species details.
+            </StatusMessage>
+          )}
+          {!species && !speciesError && (
             <StatusMessage kind="loading">Loading evolution line…</StatusMessage>
           )}
         </section>

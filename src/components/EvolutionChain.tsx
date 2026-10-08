@@ -76,8 +76,15 @@ interface EvolutionChainProps {
 
 /** The full evolution line for a species, with every stage clickable. */
 export function EvolutionChain({ species, currentSpeciesName, onSelect }: EvolutionChainProps) {
-  const { data, error, isLoading } = useEvolutionChain(species.evolution_chain.url)
+  const { data, error, isLoading } = useEvolutionChain(species.evolution_chain?.url ?? null)
 
+  if (!species.evolution_chain) {
+    return (
+      <p className="text-body-secondary mb-0">
+        No evolution data is available for {formatSpeciesName(species.name)}.
+      </p>
+    )
+  }
   if (isLoading) return <StatusMessage kind="loading">Loading evolution line…</StatusMessage>
   if (error || !data) {
     return <StatusMessage kind="error">Couldn't load this Pokémon's evolution line.</StatusMessage>

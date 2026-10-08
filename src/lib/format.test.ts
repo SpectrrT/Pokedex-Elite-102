@@ -1,6 +1,9 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest'
+import deoxysAttack from '../test/fixtures/pokemon-deoxys-attack.json'
+import pikachu from '../test/fixtures/pokemon-pikachu.json'
 import speciesPikachu from '../test/fixtures/species-pikachu.json'
-import type { PokemonSpecies } from '../types/pokeapi'
+import type { Pokemon, PokemonSpecies } from '../types/pokeapi'
 import {
   cleanFlavorText,
   englishFlavorText,
@@ -12,6 +15,7 @@ import {
   formatStatName,
   formatWeight,
   humanize,
+  nationalDexNumber,
 } from './format'
 
 describe('humanize', () => {
@@ -58,6 +62,9 @@ describe('measurements', () => {
   it('formats dex numbers, height and weight', () => {
     expect(formatDexNumber(25)).toBe('#0025')
     expect(formatDexNumber(1025)).toBe('#1025')
+    expect(nationalDexNumber(pikachu as Pokemon)).toBe(25)
+    // Alternate forms have internal ids (10001+) but belong to a numbered species.
+    expect(nationalDexNumber(deoxysAttack as Pokemon)).toBe(386)
     expect(formatHeight(4)).toBe('0.4 m')
     expect(formatHeight(17)).toBe('1.7 m')
     expect(formatWeight(60)).toBe('6.0 kg')
@@ -82,10 +89,9 @@ describe('flavor text', () => {
 
   it('picks the most recent English entry and the English genus', () => {
     const species = speciesPikachu as PokemonSpecies
-    const latestEnglish = species.flavor_text_entries
-      .filter((entry) => entry.language.name === 'en')
-      .at(-1)
-    expect(englishFlavorText(species)).toBe(cleanFlavorText(latestEnglish?.flavor_text ?? ''))
+    expect(englishFlavorText(species)).toBe(
+      'Possesses cheek sacs in which it stores electricity. This clever forest-dweller roasts tough berries with an electric shock before consuming them.',
+    )
     expect(englishGenus(species)).toBe('Mouse Pokémon')
   })
 
