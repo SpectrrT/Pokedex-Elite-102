@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A Pokédex built on PokéAPI: search any Pokémon, discover a random one, and explore its evolution line."
+    />
+    <meta name="theme-color" content="#dc0a2d" />
+    <title>Pokédex</title>
+    <script>
+      // Apply the saved or system colour mode before first paint so dark mode doesn't flash white.
+      try {
+        var stored = localStorage.getItem('pokedex-theme')
+        var dark =
+          stored === 'dark' ||
+          (stored !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.setAttribute('data-bs-theme', dark ? 'dark' : 'light')
+      } catch (error) {
+        /* storage or matchMedia unavailable: the app applies the theme after mount instead */
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

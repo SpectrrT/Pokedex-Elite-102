@@ -1,13 +1,330 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --pokedex-red: #dc0a2d;
+  --pokedex-red-dark: #a30722;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* ---------- Header ---------- */
+
+.app-header {
+  background: linear-gradient(135deg, var(--pokedex-red), var(--pokedex-red-dark));
+  color: #fff;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 0.2);
+}
+
+.app-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.app-brand:hover,
+.app-brand:focus-visible {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border-radius: 50%;
+}
+
+/* ---------- Pokémon card ---------- */
+
+.pokemon-card {
+  border: 0;
+  border-radius: 1rem;
+}
+
+.dex-number {
+  font-family: var(--bs-font-monospace);
+  font-size: 1.1rem;
+  color: var(--bs-secondary-color);
+}
+
+.pokemon-artwork {
+  width: min(100%, 320px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 24px rgb(0 0 0 / 0.22));
+}
+
+.pokemon-artwork--missing {
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--bs-tertiary-bg);
+}
+
+.flavor-text {
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+/* ---------- Type badges ---------- */
+
+.type-badge {
+  --type-color: #777;
+  --type-fg: #fff;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--type-color);
+  color: var(--type-fg);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.1);
+}
+
+.type-badge__detail {
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.18);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.type-normal {
+  --type-color: #a8a77a;
+  --type-fg: #1a1a1a;
+}
+.type-fire {
+  --type-color: #ee8130;
+}
+.type-water {
+  --type-color: #6390f0;
+}
+.type-electric {
+  --type-color: #f7d02c;
+  --type-fg: #1a1a1a;
+}
+.type-grass {
+  --type-color: #7ac74c;
+  --type-fg: #1a1a1a;
+}
+.type-ice {
+  --type-color: #96d9d6;
+  --type-fg: #1a1a1a;
+}
+.type-fighting {
+  --type-color: #c22e28;
+}
+.type-poison {
+  --type-color: #a33ea1;
+}
+.type-ground {
+  --type-color: #e2bf65;
+  --type-fg: #1a1a1a;
+}
+.type-flying {
+  --type-color: #a98ff3;
+  --type-fg: #1a1a1a;
+}
+.type-psychic {
+  --type-color: #f95587;
+}
+.type-bug {
+  --type-color: #a6b91a;
+  --type-fg: #1a1a1a;
+}
+.type-rock {
+  --type-color: #b6a136;
+  --type-fg: #1a1a1a;
+}
+.type-ghost {
+  --type-color: #735797;
+}
+.type-dragon {
+  --type-color: #6f35fc;
+}
+.type-dark {
+  --type-color: #705746;
+}
+.type-steel {
+  --type-color: #b7b7ce;
+  --type-fg: #1a1a1a;
+}
+.type-fairy {
+  --type-color: #d685ad;
+  --type-fg: #1a1a1a;
+}
+
+.matchup-title {
+  margin-bottom: 0.5rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---------- Base stats ---------- */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: 5.5rem 3rem 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-row dt,
+.stat-row dd {
+  margin: 0;
+}
+
+.stat-row dt {
+  font-weight: 600;
+}
+
+.stat-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-row .progress {
+  height: 0.75rem;
+}
+
+.stat-row--total {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--bs-border-color);
+}
+
+/* ---------- Evolution line ---------- */
+
+.evolution-chain {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.evolution-branch,
+.evolution-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.evolution-children {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.evolution-method {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 9.5rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.evolution-arrow {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--bs-secondary-color);
+}
+
+.evolution-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 8rem;
+  padding: 0.6rem 0.75rem;
+  border: 2px solid transparent;
+  border-radius: 0.9rem;
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
+  font-weight: 600;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.evolution-stage:hover,
+.evolution-stage:focus-visible {
+  border-color: var(--pokedex-red);
+  transform: translateY(-2px);
+}
+
+.evolution-stage:focus-visible {
+  outline: 3px solid var(--bs-focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* Branch separator; only needed once the tree collapses into a single column. */
+.evolution-or {
+  display: none;
+}
+
+.evolution-stage--current {
+  border-color: var(--pokedex-red);
+  background: var(--bs-danger-bg-subtle);
+}
+
+.evolution-stage img {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+}
+
+@media (max-width: 575.98px) {
+  .evolution-branch,
+  .evolution-step {
+    flex-direction: column;
+  }
+
+  .evolution-arrow {
+    transform: rotate(90deg);
+  }
+
+  .evolution-children {
+    align-self: stretch;
+  }
+
+  .evolution-or {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--bs-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .evolution-or::before,
+  .evolution-or::after {
+    content: '';
+    flex: 1;
+    border-top: 1px dashed var(--bs-border-color);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .evolution-stage {
+    transition: none;
+  }
+
+  .evolution-stage:hover,
+  .evolution-stage:focus-visible {
+    transform: none;
+  }
 }
